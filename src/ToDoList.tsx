@@ -32,17 +32,26 @@ import { useForm } from 'react-hook-form';
 // }
 
 function ToDoList() {
-  const { register, watch } = useForm();
-  console.log(watch());
+  const { register, handleSubmit, formState } = useForm();
+  const onVaild = (data: any) => {
+    console.log(data);
+  };
+  console.log(formState.errors);
   return (
     <div>
-      <form>
-        <input {...register('Email')} placeholder='write a to doEmail' />
-        <input {...register('firstName')} placeholder='First Name' />
-        <input {...register('lastName')} placeholder='Last Name' />
-        <input {...register('userName')} placeholder='UserName' />
-        <input {...register('password')} placeholder='Password' />
-        <input {...register('password1')} placeholder='Password1' />
+      <form style={{ display: 'flex', flexDirection: 'column' }} onSubmit={handleSubmit(onVaild)}>
+        <input {...register('Email', { required: true })} placeholder='Email' />
+        <input {...register('firstName', { required: true })} placeholder='First Name' />
+        <input {...register('lastName', { required: true })} placeholder='Last Name' />
+        <input {...register('userName', { required: true, minLength: 10 })} placeholder='UserName' />
+        <input {...register('password', { required: true, minLength: 5 })} placeholder='Password' />
+        <input
+          {...register('password1', {
+            required: 'Password is required',
+            minLength: { value: 5, message: 'Your password id too short' },
+          })}
+          placeholder='Password1'
+        />
         <button>Add</button>
       </form>
     </div>
