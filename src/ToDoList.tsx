@@ -73,7 +73,7 @@ function ToDoList() {
             required: 'userName required',
             validate: {
               noNico: (value) => (value.includes('nico') ? 'No Nice allowed' : true),
-              noNick: (value) => (value.includes('nick') ? 'No Nice allowed' : true),
+              noNick: (value) => (value.includes('nick') ? 'No Nick allowed' : true),
             },
             minLength: { value: 10, message: 'Your userName too short' },
           })}
