@@ -37,19 +37,23 @@ interface IForm {
   userName: string;
   password: string;
   password1: string;
+  extraError?: string;
 }
 function ToDoList() {
   const {
     register,
     handleSubmit,
     formState: { errors },
+    setError,
   } = useForm<IForm>({
     defaultValues: {
       email: '@naver.com',
     },
   });
-  const onVaild = (data: any) => {
-    console.log(data);
+  const onVaild = (data: IForm) => {
+    if (data.password !== data.password1) {
+      setError('password1', { message: 'Password are not the same' });
+    }
   };
   console.log(errors);
   return (
@@ -64,12 +68,28 @@ function ToDoList() {
         />
         <input {...register('firstName', { required: 'firstName required' })} placeholder='First Name' />
         <input {...register('lastName', { required: 'lastName required' })} placeholder='Last Name' />
-        <input {...register('userName', { required: 'userName required', minLength: 10 })} placeholder='UserName' />
-        <input {...register('password', { required: 'password required', minLength: 5 })} placeholder='Password' />
+        <input
+          {...register('userName', {
+            required: 'userName required',
+            validate: {
+              noNico: (value) => (value.includes('nico') ? 'No Nice allowed' : true),
+              noNick: (value) => (value.includes('nick') ? 'No Nice allowed' : true),
+            },
+            minLength: { value: 10, message: 'Your userName too short' },
+          })}
+          placeholder='UserName'
+        />
+        <input
+          {...register('password', {
+            required: 'password required',
+            minLength: { value: 5, message: 'Your password too short' },
+          })}
+          placeholder='Password'
+        />
         <input
           {...register('password1', {
             required: 'Password1 is required',
-            minLength: { value: 5, message: 'Your password id too short' },
+            minLength: { value: 5, message: 'Your Password1 too short' },
           })}
           placeholder='Password1'
         />
@@ -79,7 +99,8 @@ function ToDoList() {
             (errors?.lastName?.message as string) ||
             (errors?.userName?.message as string) ||
             (errors?.password?.message as string) ||
-            (errors?.password1?.message as string)}
+            (errors?.password1?.message as string) ||
+            errors?.extraError?.message}
         </span>
         <button>Add</button>
       </form>
