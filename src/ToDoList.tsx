@@ -62,13 +62,13 @@ function ToDoList() {
           })}
           placeholder='Email'
         />
-        <input {...register('firstName', { required: true })} placeholder='First Name' />
-        <input {...register('lastName', { required: true })} placeholder='Last Name' />
-        <input {...register('userName', { required: true, minLength: 10 })} placeholder='UserName' />
-        <input {...register('password', { required: true, minLength: 5 })} placeholder='Password' />
+        <input {...register('firstName', { required: 'firstName required' })} placeholder='First Name' />
+        <input {...register('lastName', { required: 'lastName required' })} placeholder='Last Name' />
+        <input {...register('userName', { required: 'userName required', minLength: 10 })} placeholder='UserName' />
+        <input {...register('password', { required: 'password required', minLength: 5 })} placeholder='Password' />
         <input
           {...register('password1', {
-            required: 'Password is required',
+            required: 'Password1 is required',
             minLength: { value: 5, message: 'Your password id too short' },
           })}
           placeholder='Password1'
@@ -78,7 +78,8 @@ function ToDoList() {
             (errors?.firstName?.message as string) ||
             (errors?.lastName?.message as string) ||
             (errors?.userName?.message as string) ||
-            (errors?.password?.message as string)}
+            (errors?.password?.message as string) ||
+            (errors?.password1?.message as string)}
         </span>
         <button>Add</button>
       </form>
