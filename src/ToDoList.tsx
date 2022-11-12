@@ -30,17 +30,38 @@ import { useForm } from 'react-hook-form';
 //     </div>
 //   );
 // }
-
+interface IForm {
+  email: string;
+  firstName: string;
+  lastName: string;
+  userName: string;
+  password: string;
+  password1: string;
+}
 function ToDoList() {
-  const { register, handleSubmit, formState } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<IForm>({
+    defaultValues: {
+      email: '@naver.com',
+    },
+  });
   const onVaild = (data: any) => {
     console.log(data);
   };
-  console.log(formState.errors);
+  console.log(errors);
   return (
     <div>
       <form style={{ display: 'flex', flexDirection: 'column' }} onSubmit={handleSubmit(onVaild)}>
-        <input {...register('Email', { required: true })} placeholder='Email' />
+        <input
+          {...register('email', {
+            required: 'Email required',
+            pattern: { value: /^[A-Za-z0-9._%+-]+@naver.com$/, message: 'Only naver.com emails allowed' },
+          })}
+          placeholder='Email'
+        />
         <input {...register('firstName', { required: true })} placeholder='First Name' />
         <input {...register('lastName', { required: true })} placeholder='Last Name' />
         <input {...register('userName', { required: true, minLength: 10 })} placeholder='UserName' />
@@ -52,6 +73,13 @@ function ToDoList() {
           })}
           placeholder='Password1'
         />
+        <span>
+          {(errors?.email?.message as string) ||
+            (errors?.firstName?.message as string) ||
+            (errors?.lastName?.message as string) ||
+            (errors?.userName?.message as string) ||
+            (errors?.password?.message as string)}
+        </span>
         <button>Add</button>
       </form>
     </div>
