@@ -1,4 +1,4 @@
-import { IToDo, toDoState } from './atome';
+import { IToDo, toDoState } from '../atom';
 import { useSetRecoilState } from 'recoil';
 
 function ToDo({ text, category, id }: IToDo) {
